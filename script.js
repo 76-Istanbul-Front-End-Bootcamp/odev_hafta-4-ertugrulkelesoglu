@@ -1,7 +1,8 @@
 const data = {
-  USD: {EUR: 0.82, GBP: 0.74},
-  EUR: {USD: 1.23, GBP: 0.91},
-  GBP: {USD: 1.35, EUR: 1.10},
+  USD: {EUR: 0.82, GBP: 0.74, TRY:7.56},
+  EUR: {USD: 1.23, GBP: 0.91, TRY:9.23},
+  GBP: {USD: 1.35, EUR: 1.10, TRY:10.29},
+  TRY: {USD: 0.13, EUR: 0.11, GBP:0.097},
 };
 
 const currencyKeys = Object.keys(data);
@@ -37,18 +38,56 @@ createCurrencyElements(currencyKeys, parentToEl, toInputName);
 
 
 const calculateButton = document.querySelector("#calculate-button");
+
+  
+
+
+
 calculateButton.addEventListener("click", function(){
-   // kimden ceviriyourz
+  function checkFunc() {
+    if (document.querySelectorAll('input[type="radio"]:checked').length === 0  ) alert("None of the buttons are checked!!!");
+    else if(document.querySelectorAll('input[type="radio"]:checked').length === 1  ) alert("Only 1 button is checked. Please select one more button!!!");
+    else{
+      // kimden ceviriyourz
    const fromTarget = document.querySelector("input[name='currency_from']:checked").value;
    // kime ceviriyoruz
    const toTarget   = document.querySelector("input[name='currency_to']:checked").value;
+
+
+
+
+    
    // amountu alalim
    const amount     = document.querySelector("input[name='amount']").value;
+   function checkAmount() {
+    
+    if (isNaN(amount)) alert("Not a number");
+    else if(fromTarget===toTarget) alert("Both buttons cannot be same!!!")
+    else{
+      const currentCurrencyObject = data[fromTarget];
+      const resultForOne = currentCurrencyObject[toTarget];
+      const result = amount * resultForOne;
 
-   const currentCurrencyObject = data[fromTarget];
-   const resultForOne = currentCurrencyObject[toTarget];
-   const result = amount * resultForOne;
+      const currencyResult = document.querySelector("#currency-result");
+      
+      currencyResult.innerHTML = amount + " " + fromTarget + " = " + result + " " + toTarget;
+    }
+    
+   }
+    
+    checkAmount()
+    }
+    
+  }
+  
+  checkFunc()
+  
+   
 
-   const currencyResult = document.querySelector("#currency-result");
-   currencyResult.innerHTML = amount + " " + fromTarget + " = " + result + " " + toTarget;
+   
+   
+   
+   
+
+   
 });
